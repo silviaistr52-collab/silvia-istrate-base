@@ -1,17 +1,3 @@
-"""
-cli.py — the `analyze` command-line tool.
-
-Usage:
-    analyze --file ./sample.jsonl --threshold 3
-    analyze --bucket my-logs --prefix logs/ --threshold 3
-
-Exit codes:
-    0 — success, no alert
-    1 — error (e.g. file not found, S3 unreachable)
-    2 — alert (total errors >= threshold). The spec asks for this so
-        the CLI can be used in cron/CI pipelines that check exit codes.
-"""
-
 import json
 import sys
 
