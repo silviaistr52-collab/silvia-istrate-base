@@ -1,0 +1,2 @@
+[console_scripts]
+analyze = log_analytics.cli:main

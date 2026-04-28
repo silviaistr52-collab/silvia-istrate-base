@@ -1,0 +1,107 @@
+# ============================================================================
+# pyproject.toml — Python project configuration
+# ============================================================================
+# This single file replaces setup.py, setup.cfg, requirements.txt, pytest.ini,
+# and several other legacy config files. It's the modern standard (PEP 621).
+# ============================================================================
+
+
+# ----------------------------------------------------------------------------
+# [build-system] — How pip should build this package
+# ----------------------------------------------------------------------------
+# When pip installs this project, it needs to know what tool to use to turn
+# the source code into an installable package. We use setuptools, which is
+# the boring default that always works. Alternatives exist (hatchling, poetry)
+# but setuptools is the safest choice for a take-home.
+[build-system]
+requires = ["setuptools>=68"]              # build-time dependency; min version 68
+build-backend = "setuptools.build_meta"    # the specific entry point pip calls
+
+
+# ----------------------------------------------------------------------------
+# [project] — Metadata about the package itself
+# ----------------------------------------------------------------------------
+[project]
+name = "log-analytics"                     # name on PyPI / pip install <name>
+version = "0.1.0"                          # semver; bump when releasing
+description = "Streaming log analytics service for JSONL error logs"
+requires-python = ">=3.11"                 # refuse to install on older Python
+
+# Runtime dependencies — installed automatically when someone installs this package.
+# These are the libraries the actual service NEEDS to run in production.
+dependencies = [
+    "boto3>=1.34",                         # AWS SDK — talks to S3
+    "fastapi>=0.110",                      # web framework for the HTTP API
+    "uvicorn[standard]>=0.27",             # ASGI server that runs FastAPI
+                                           # [standard] adds optional perf libraries
+    "click>=8.1",                          # CLI framework, cleaner than argparse
+]
+
+
+# ----------------------------------------------------------------------------
+# [project.optional-dependencies] — Extra dependency groups, installed on demand
+# ----------------------------------------------------------------------------
+# These do NOT install by default. Production containers won't have them.
+# They install only when explicitly asked for: pip install ".[dev]"
+# Keeps production images small and fast.
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",                         # test runner
+    "pytest-cov>=4.1",                     # measures test coverage
+    "ruff>=0.3",                           # linter + formatter (fast, modern)
+    "moto[s3]>=5.0",                       # fakes AWS in memory for tests
+                                           # [s3] = only S3 mocks, not all of AWS
+    "httpx>=0.27",                         # HTTP client used by FastAPI's TestClient
+]
+
+
+# ----------------------------------------------------------------------------
+# [project.scripts] — Command-line tools this package provides
+# ----------------------------------------------------------------------------
+# After `pip install`, a command called "analyze" appears on the user's PATH.
+# When they run `analyze --bucket foo`, it calls the main() function in
+# log_analytics/cli.py. This is exactly what the spec asks for:
+#     analyze --bucket my-logs --prefix logs/ --threshold 3
+[project.scripts]
+analyze = "log_analytics.cli:main"
+#  ^command  ^module path        ^function to call
+
+
+# ----------------------------------------------------------------------------
+# [tool.setuptools.packages.find] — Where the code lives
+# ----------------------------------------------------------------------------
+# We use the "src layout": code is in src/log_analytics/, not at the project
+# root. This forces tests to use the installed package (catches packaging bugs
+# early). Without this line, setuptools would look in the wrong place and fail.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+# ----------------------------------------------------------------------------
+# [tool.pytest.ini_options] — pytest configuration
+# ----------------------------------------------------------------------------
+# Tells pytest where tests live and what flags to apply by default.
+[tool.pytest.ini_options]
+testpaths = ["tests"]                      # only look for tests here
+addopts = "-v --tb=short"                  # -v = verbose; --tb=short = shorter
+                                           # tracebacks when tests fail
+
+
+# ----------------------------------------------------------------------------
+# [tool.ruff] — Linter / formatter settings
+# ----------------------------------------------------------------------------
+# Ruff is a single tool that replaces flake8 + black + isort + pylint. Faster
+# and easier to configure than the old combination.
+[tool.ruff]
+line-length = 100                          # default is 88; 100 is more relaxed
+target-version = "py311"                   # assume Python 3.11+ syntax
+
+[tool.ruff.lint]
+# Which families of lint rules to enable. Each letter is a rule category:
+#   E  = pycodestyle errors      (basic style issues)
+#   F  = pyflakes                (unused imports, undefined names)
+#   W  = pycodestyle warnings
+#   I  = isort                   (consistent import ordering)
+#   B  = flake8-bugbear          (likely bugs and design issues)
+#   UP = pyupgrade               (suggests modern Python syntax)
+select = ["E", "F", "W", "I", "B", "UP"]

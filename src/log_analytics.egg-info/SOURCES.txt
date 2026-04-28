@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/log_analytics/__init__.py
+src/log_analytics/cli.py
+src/log_analytics/core.py
+src/log_analytics/sources.py
+src/log_analytics.egg-info/PKG-INFO
+src/log_analytics.egg-info/SOURCES.txt
+src/log_analytics.egg-info/dependency_links.txt
+src/log_analytics.egg-info/entry_points.txt
+src/log_analytics.egg-info/requires.txt
+src/log_analytics.egg-info/top_level.txt
