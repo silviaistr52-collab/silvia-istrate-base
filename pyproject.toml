@@ -82,10 +82,11 @@ where = ["src"]
 # ----------------------------------------------------------------------------
 # Tells pytest where tests live and what flags to apply by default.
 [tool.pytest.ini_options]
-testpaths = ["tests"]                      # only look for tests here
-addopts = "-v --tb=short"                  # -v = verbose; --tb=short = shorter
-                                           # tracebacks when tests fail
-
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+markers = [
+    "slow: tests that take more than a few seconds to run",
+]
 
 # ----------------------------------------------------------------------------
 # [tool.ruff] — Linter / formatter settings
