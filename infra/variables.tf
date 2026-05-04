@@ -35,7 +35,7 @@ variable "task_cpu" {
 }
 
 variable "task_memory" {
-  description = "ECS task memory in MB. Must be <= 256 per the spec."
+  description = "ECS task memory in MB. Must be <= 512 per the spec."
   type        = number
   default     = 512
 }
