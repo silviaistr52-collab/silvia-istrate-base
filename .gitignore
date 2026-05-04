@@ -50,6 +50,7 @@ infra/*.tfstate.backup
 infra/*.tfplan
 infra/terraform.tfvars
 infra/*.auto.tfvars
+infra/.terraform.lock.hcl
 
 
 # Secrets — defence in depth, NEVER commit credentials
