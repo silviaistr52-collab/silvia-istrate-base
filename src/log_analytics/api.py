@@ -10,7 +10,6 @@ from fastapi.responses import JSONResponse
 from log_analytics.core import analyze
 from log_analytics.sources import read_s3_prefix
 
-
 # Read the git SHA from an env var. The Dockerfile bakes this in at build
 # time via a build arg, so /version returns whatever was deployed. Defaults
 # to "unknown" for local development where we haven't set it.
@@ -73,7 +72,7 @@ def readyz():
         logger.warning(f"readyz failed: {e}")
         # 503 Service Unavailable — standard signal to the load balancer
         # to stop routing traffic here.
-        raise HTTPException(status_code=503, detail="dependencies unavailable")
+        raise HTTPException(status_code=503, detail="dependencies unavailable") from e
 
 
 @app.get("/version")
@@ -102,10 +101,10 @@ def analyze_endpoint(
         return result
     except (BotoCoreError, ClientError) as e:
         logger.error(f"S3 error: {e}")
-        raise HTTPException(status_code=502, detail="upstream S3 error")
-    except Exception as e:
+        raise HTTPException(status_code=502, detail="upstream S3 error") from e
+    except Exception:
         logger.exception("unexpected error")
-        raise HTTPException(status_code=500, detail="internal server error")
+        raise HTTPException(status_code=500, detail="internal server error") from None
 
 
 # Custom exception handler — ensures every error response is consistent JSON,

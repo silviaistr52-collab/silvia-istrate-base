@@ -36,8 +36,7 @@ def read_local_file(path):
         # Iterating over a file object yields one line at a time. Python
         # handles the buffering internally — we don't have to worry about
         # reading chunks ourselves.
-        for line in f:
-            yield line
+        yield from f
 
 
 def read_s3_prefix(bucket, prefix, client=None):

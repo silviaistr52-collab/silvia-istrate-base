@@ -15,7 +15,9 @@ assertion.
 """
 
 import tracemalloc
+
 import pytest
+
 from log_analytics.core import analyze
 
 
