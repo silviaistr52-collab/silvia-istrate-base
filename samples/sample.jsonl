@@ -1,0 +1,8 @@
+{"ts":"2025-09-15T14:10:01Z","service":"api","level":"INFO","msg":"GET /health 200","latency_ms":10}
+{"ts":"2025-09-15T14:10:04Z","service":"api","level":"ERROR","msg":"500 internal server error","endpoint":"/checkout","latency_ms":2001}
+{"ts":"2025-09-15T14:10:07Z","service":"orders","level":"ERROR","msg":"db timeout","orderId":"o-125","customer":"c-21"}
+{"ts":"2025-09-15T14:10:09Z","service":"billing","level":"ERROR","msg":"foreign key constraint","orderId":"o-125","sqlState":"23503"}
+{"ts":"2025-09-15T14:10:12Z","service":"shipping","level":"WARN","msg":"carrier API degraded","carrier":"DHL"}
+{"ts":"2025-09-15T14:10:14Z","service":"shipping","level":"ERROR","msg":"tracking API unavailable","carrier":"DHL"}
+{"ts":"2025-09-15T14:10:16Z","service":"auth","level":"INFO","msg":"user login success","userId":"u-55"}
+{"ts":"2025-09-15T14:10:19Z","service":"auth","level":"ERROR","msg":"invalid password","userId":"u-56","ip":"203.0.113.5"}
