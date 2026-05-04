@@ -21,7 +21,7 @@ resource "aws_iam_role" "github_actions" {
       Condition = {
         StringLike = {
           # Only allow the main branch of our specific repo.
-          "token.actions.githubusercontent.com:sub" = "repo:silviaistr52-collab/silvia-istrate-base:ref:refs/heads/*"
+          "token.actions.githubusercontent.com:sub" = "repo:silviaistr52-collab/silvia-istrate-base:ref:refs/heads/main"
         }
         StringEquals = {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
