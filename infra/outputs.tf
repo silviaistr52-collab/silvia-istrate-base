@@ -22,3 +22,8 @@ output "ecs_service_name" {
   description = "ECS service name — used by CI/CD to force new deployment"
   value       = aws_ecs_service.app.name
 }
+
+output "github_actions_role_arn" {
+  description = "IAM role ARN for GitHub Actions OIDC"
+  value       = aws_iam_role.github_actions.arn
+}
